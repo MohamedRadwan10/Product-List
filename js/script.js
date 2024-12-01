@@ -136,13 +136,13 @@ let products = [
 ];
 
 // ^------------------------------------------------------------------------------------------------------------------
-// Initialize cart products from local storage
+
 let cartProducts = localStorage.getItem("cartProducts")
   ? JSON.parse(localStorage.getItem("cartProducts"))
   : [];
 
 // ^------------------------------------------------------------------------------------------------------------------
-// Function to update the cart display
+
 function updateCartDisplay() {
   let count = cartProducts.reduce((total, item) => total + item.quantity, 0);
 
@@ -189,39 +189,39 @@ function updateCartDisplay() {
     CartEmpty.style.display = "block";
     delivery.style.display = "none";
     confirmOrderBtn.style.display = "none";
-    cartCount.innerHTML = `Your Cart (${count})`; // Show empty cart message
+    cartCount.innerHTML = `Your Cart (${count})`; 
     CartItems.innerHTML = "";
-    result.innerHTML = ""; // Clear cart items display
-    return; // Exit if cart is empty
+    result.innerHTML = ""; 
+    return; 
   } else {
-    CartEmpty.style.display = "none"; // Hide empty cart message
+    CartEmpty.style.display = "none"; 
     delivery.style.display = "block";
     confirmOrderBtn.style.display = "block";
     result.innerHTML = res;
     CartItems.innerHTML = box;
 
-    // Update the total count of items in the cart
+    
     cartCount.innerHTML = `Your Cart (${count})`;
   }
 }
 
-// Initial display of the cart
+
 updateCartDisplay();
 
 // ^------------------------------------------------------------------------------------------------------------------
 function removeFromCart(id) {
-  // Find the index of the item to be removed
+ 
   let index = cartProducts.findIndex((item) => item.id == id);
 
-  // Check if the item exists in the cart
+
   if (index !== -1) {
-    // Remove the item from the cartProducts array
+   
     cartProducts.splice(index, 1);
 
-    // Update local storage with the new cartProducts array
+    
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
 
-    // Update the cart display after removing the item
+    
     updateCartDisplay();
   }
 }
@@ -231,7 +231,7 @@ function addToCart(id) {
   let chooseItem = products.find((item) => item.id == id);
   let flag = false;
 
-  // Check if the item is already in the cart
+ 
   cartProducts.forEach((product) => {
     if (product.productName === chooseItem.name) {
       product.quantity++;
@@ -239,7 +239,7 @@ function addToCart(id) {
     }
   });
 
-  // If the item is not in the cart, add it
+
   if (!flag) {
     cartProducts.push({
       productName: chooseItem.name,
@@ -254,16 +254,16 @@ function addToCart(id) {
     });
   }
 
-  // Save the updated cart to localStorage
+  
   localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
 
-  // Update the cart display
+
   updateCartDisplay();
 }
 
 // ^------------------------------------------------------------------------------------------------------------------
 function getProducts() {
-  // Map through the products and create HTML for each product
+
   let y = products
     .map((ele) => {
       return `  
@@ -299,11 +299,11 @@ function getProducts() {
     })
     .join(" ");
 
-  // Update the inner HTML of the container with the generated product HTML
+
   allProducts.innerHTML = y;
 }
 
-// Call the function to display products
+
 getProducts();
 
 // ^------------------------------------------------------------------------------------------------------------------
@@ -312,7 +312,7 @@ confirmOrderBtn.addEventListener("click", confirm);
 function confirm() {
   let totalPrice = cartProducts
     .reduce((total, item) => total + item.price * item.quantity, 0)
-    .toFixed(2); // Calculate total price
+    .toFixed(2); 
 
   let order = cartProducts
     .map((item) => {
@@ -353,9 +353,9 @@ function confirm() {
 startOrderBtn.addEventListener("click", startOrder);
 
 function startOrder() {
-  // Clear the cart after confirming the order
-  cartProducts = []; // Reset cartProducts
-  localStorage.setItem("cartProducts", JSON.stringify(cartProducts)); // Update localStorage
+
+  cartProducts = []; 
+  localStorage.setItem("cartProducts", JSON.stringify(cartProducts)); 
   allOrderOverlay.style.display = "none";
 
   updateCartDisplay();
